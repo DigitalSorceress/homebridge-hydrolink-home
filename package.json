@@ -1,0 +1,36 @@
+{
+  "name": "homebridge-hydrolink-home",
+  "displayName": "HydroLink Home (EcoWater)",
+  "version": "0.1.0",
+  "description": "Homebridge platform plugin that exposes an EcoWater softener (HydroLink Home) as HomeKit sensors: salt level, recharging, and flow alarms.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "config.schema.json",
+    "README.md"
+  ],
+  "keywords": [
+    "homebridge-plugin",
+    "ecowater",
+    "hydrolink",
+    "water-softener"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "homebridge": "^1.8.0 || ^2.0.0-beta.0"
+  },
+  "scripts": {
+    "build": "rimraf ./dist && tsc",
+    "watch": "tsc --watch",
+    "dev": "npm run build && homebridge -D -U ./.homebridge-dev -P ."
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "homebridge": "^2.5.0",
+    "rimraf": "^6.1.4",
+    "typescript": "^7.0.2"
+  }
+}

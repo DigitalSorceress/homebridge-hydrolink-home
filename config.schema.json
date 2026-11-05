@@ -1,0 +1,61 @@
+{
+  "pluginAlias": "HydroLinkHome",
+  "pluginType": "platform",
+  "singular": true,
+  "headerDisplay": "Reads your EcoWater softener from the HydroLink Home cloud (unofficial API). Read-only.",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": { "title": "Name", "type": "string", "default": "HydroLink Home" },
+      "email": { "title": "HydroLink Home email", "type": "string", "format": "email", "required": true },
+      "password": {
+        "title": "HydroLink Home password",
+        "type": "string",
+        "required": true,
+        "x-schema-form": { "type": "password" }
+      },
+      "pollIntervalSeconds": {
+        "title": "Poll interval (seconds)",
+        "type": "integer",
+        "default": 300,
+        "minimum": 60,
+        "description": "How often to read the softener. The flow alarm needs 30 continuous minutes to trip, so 300 is plenty."
+      },
+      "saltTankMaxTenths": {
+        "title": "Salt tank full value",
+        "type": "integer",
+        "default": 85,
+        "minimum": 1,
+        "description": "Value of salt_level_tenths when the tank is full. Adjust until the percentage matches the HydroLink app."
+      },
+      "lowSaltThresholdPercent": {
+        "title": "Low salt threshold (%)",
+        "type": "integer",
+        "default": 20,
+        "minimum": 1,
+        "maximum": 100
+      },
+      "alarmConfirmPolls": {
+        "title": "Polls an alarm must stay on before it trips",
+        "type": "integer",
+        "default": 1,
+        "minimum": 1,
+        "description": "Raise to 2 or 3 to ignore one-off readings."
+      },
+      "exposeWaterUsage": {
+        "title": "Show \"Water Used Today\" sensor",
+        "type": "boolean",
+        "default": true,
+        "description": "Gallons used today, shown in Apple Home as a light sensor (HomeKit has no volume sensor, so the unit reads \"lux\" but the number is gallons)."
+      },
+      "webhookUrl": {
+        "title": "Webhook URL (optional)",
+        "type": "string",
+        "format": "uri",
+        "description": "Receives a JSON POST whenever an alarm trips or clears."
+      },
+      "debug": { "title": "Verbose logging", "type": "boolean", "default": false }
+    },
+    "required": ["email", "password"]
+  }
+}

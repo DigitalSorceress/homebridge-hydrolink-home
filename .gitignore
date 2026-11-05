@@ -1,0 +1,7 @@
+config.md
+node_modules/
+dist/
+*.log
+.env
+.claude/settings.local.json
+.homebridge-dev/
