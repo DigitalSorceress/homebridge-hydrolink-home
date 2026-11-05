@@ -1,0 +1,23 @@
+{
+  "id": "00000000-0000-4000-8000-000000000000",
+  "nickname": "Test Softener",
+  "serial_number": "TEST-0000-0000",
+  "system_type": "demand_softener",
+  "is_online": true,
+  "properties": {
+    "salt_level_tenths": { "name": "salt_level_tenths", "value": 30, "updated_at": "2026-01-01T00:00:00Z" },
+    "low_salt_alert": { "name": "low_salt_alert", "value": 0, "updated_at": "2026-01-01T00:00:00Z" },
+    "regen_status_enum": { "name": "regen_status_enum", "value": 0, "updated_at": "2026-01-01T00:00:00Z" },
+    "gallons_used_today": { "name": "gallons_used_today", "value": 24, "updated_at": "2026-01-01T00:00:00Z" },
+    "avg_daily_use_gals": { "name": "avg_daily_use_gals", "value": 76, "updated_at": "2026-01-01T00:00:00Z" },
+    "current_water_flow_gpm": { "name": "current_water_flow_gpm", "value": 0, "updated_at": "2026-01-01T00:00:00Z" },
+    "treated_water_avail_gals": { "name": "treated_water_avail_gals", "value": 366, "updated_at": "2026-01-01T00:00:00Z" },
+    "days_since_last_regen": { "name": "days_since_last_regen", "value": 4, "updated_at": "2026-01-01T00:00:00Z" },
+    "out_of_salt_estimate_days": { "name": "out_of_salt_estimate_days", "value": 289, "updated_at": "2026-01-01T00:00:00Z" },
+    "rf_signal_strength_dbm": { "name": "rf_signal_strength_dbm", "value": -48, "updated_at": "2026-01-01T00:00:00Z" },
+    "flow_monitor_alert": { "name": "flow_monitor_alert", "value": 0, "updated_at": "2026-01-01T00:00:00Z" },
+    "excessive_water_use_alert": { "name": "excessive_water_use_alert", "value": 0, "updated_at": "2026-01-01T00:00:00Z" },
+    "model_description": { "name": "model_description", "value": "EWS ERR3702R30", "updated_at": "2026-01-01T00:00:00Z" },
+    "base_software_version": { "name": "base_software_version", "value": "T0.0 TEST", "updated_at": "2026-01-01T00:00:00Z" }
+  }
+}
