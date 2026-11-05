@@ -67,6 +67,20 @@
         "minimum": 10,
         "description": "While offline, flow alarms cannot be reported. Attach an automation to the Softener Offline sensor."
       },
+      "statusPagePort": {
+        "title": "Status page port",
+        "type": "integer",
+        "default": 8590,
+        "minimum": 0,
+        "maximum": 65535,
+        "description": "Serves a read-only status page at http://<this-host>:<port>/ . Set 0 to turn it off. It shows water and salt data to anyone who can reach this port, so don't expose it to the internet."
+      },
+      "statusPageBind": {
+        "title": "Status page listen address",
+        "type": "string",
+        "default": "0.0.0.0",
+        "description": "0.0.0.0 = reachable from your network. Use 127.0.0.1 to allow only this machine."
+      },
       "webhookUrl": {
         "title": "Webhook URL (optional)",
         "type": "string",

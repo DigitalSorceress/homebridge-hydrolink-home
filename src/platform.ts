@@ -1,6 +1,7 @@
 import type { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig } from 'homebridge';
 import { SoftenerAccessory } from './accessory.js';
 import { HydroLinkAuthError, HydroLinkClient, type HydroLinkDevice } from './hydrolinkClient.js';
+import { StatusServer } from './statusServer.js';
 import { PLATFORM_NAME, PLUGIN_NAME, resolveSettings, type HydroLinkConfig, type ResolvedSettings } from './settings.js';
 
 export class HydroLinkPlatform implements DynamicPlatformPlugin {
@@ -29,6 +30,17 @@ export class HydroLinkPlatform implements DynamicPlatformPlugin {
       // "Softener Offline" sensor works even if the first poll never succeeds.
       for (const [uuid, accessory] of this.cached) {
         this.handlers.set(uuid, new SoftenerAccessory(this, accessory, this.settings));
+      }
+
+      if (this.settings.statusPagePort > 0) {
+        const server = new StatusServer(
+          this.settings.statusPagePort,
+          this.settings.statusPageBind,
+          () => [...this.handlers.values()].map((h) => h.getStatus()),
+          this.log,
+        );
+        server.start();
+        this.api.on('shutdown', () => server.stop());
       }
 
       void this.poll();

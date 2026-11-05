@@ -14,6 +14,8 @@ export interface HydroLinkConfig {
   exposeTestSwitch?: boolean;
   testAlarmSeconds?: number;
   staleAfterMinutes?: number;
+  statusPagePort?: number;
+  statusPageBind?: string;
   webhookUrl?: string;
   debug?: boolean;
 }
@@ -28,6 +30,9 @@ export interface ResolvedSettings {
   exposeTestSwitch: boolean;
   testAlarmSeconds: number;
   staleAfterMinutes: number;
+  /** 0 disables the status page. */
+  statusPagePort: number;
+  statusPageBind: string;
   webhookUrl?: string;
   debug: boolean;
 }
@@ -42,6 +47,8 @@ export function resolveSettings(cfg: HydroLinkConfig): ResolvedSettings {
     exposeTestSwitch: cfg.exposeTestSwitch ?? true,
     testAlarmSeconds: Math.max(10, cfg.testAlarmSeconds ?? 60),
     staleAfterMinutes: Math.max(10, cfg.staleAfterMinutes ?? 30),
+    statusPagePort: cfg.statusPagePort ?? 8590,
+    statusPageBind: cfg.statusPageBind || '0.0.0.0',
     webhookUrl: cfg.webhookUrl || undefined,
     debug: cfg.debug ?? false,
   };

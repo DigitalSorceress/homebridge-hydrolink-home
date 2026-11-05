@@ -2,6 +2,7 @@ import type { PlatformAccessory, Service } from 'homebridge';
 import type { HydroLinkDevice } from './hydrolinkClient.js';
 import type { HydroLinkPlatform } from './platform.js';
 import type { ResolvedSettings } from './settings.js';
+import type { SoftenerStatus } from './status.js';
 
 interface AlarmDef {
   id: string;
@@ -285,6 +286,47 @@ export class SoftenerAccessory {
     if (newest) {
       this.debug(`newest property update was ${Math.round((Date.now() - newest) / 60_000)} min ago; is_online=${device.is_online}`);
     }
+  }
+
+  // --- Status page snapshot ---------------------------------------------
+
+  getStatus(): SoftenerStatus {
+    const device = this.lastDevice;
+    const val = (name: string): number | null => {
+      const raw = device?.properties?.[name]?.value;
+      return this.numOrNull(raw);
+    };
+    const tenths = val('salt_level_tenths');
+    const saltPercent =
+      tenths === null ? null : Math.round(Math.min(100, Math.max(0, (tenths * 100) / this.settings.saltTankMaxTenths)) * 10) / 10;
+    const regen = val('regen_status_enum');
+    const str = (name: string): string => String(device?.properties?.[name]?.value ?? '');
+
+    return {
+      name: device?.nickname || this.accessory.displayName,
+      serial: device?.serial_number ?? '',
+      model: str('model_description'),
+      firmware: str('base_software_version'),
+      hasData: Boolean(device),
+      online: device?.is_online ?? false,
+      offline: this.stale,
+      lastGoodAt: new Date(this.lastGoodAt).toISOString(),
+      minutesSinceGood: Math.round(((Date.now() - this.lastGoodAt) / 60_000) * 10) / 10,
+      saltPercent,
+      lowSalt:
+        Boolean(val('low_salt_alert')) || (saltPercent !== null && saltPercent <= this.settings.lowSaltThresholdPercent),
+      gallonsToday: val('gallons_used_today'),
+      avgDailyGallons: val('avg_daily_use_gals'),
+      flowGpm: val('current_water_flow_gpm'),
+      treatedWaterAvailGallons: val('treated_water_avail_gals'),
+      daysSinceRegen: val('days_since_last_regen'),
+      outOfSaltDays: val('out_of_salt_estimate_days'),
+      recharging: regen === REGEN_RECHARGING,
+      regenStatusRaw: regen,
+      signalDbm: val('rf_signal_strength_dbm'),
+      testActive: this.testForced,
+      alarms: ALARMS.map((a) => ({ id: a.id, label: a.label, active: this.alarmState.get(a.id)?.active ?? false })),
+    };
   }
 
   // --- Helpers -----------------------------------------------------------
