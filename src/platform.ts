@@ -1,15 +1,13 @@
 import type { API, DynamicPlatformPlugin, Logger, PlatformAccessory, PlatformConfig } from 'homebridge';
 import { SoftenerAccessory } from './accessory.js';
 import { HydroLinkAuthError, HydroLinkClient, type HydroLinkDevice } from './hydrolinkClient.js';
-import { PLATFORM_NAME, PLUGIN_NAME, type HydroLinkConfig } from './settings.js';
+import { PLATFORM_NAME, PLUGIN_NAME, resolveSettings, type HydroLinkConfig, type ResolvedSettings } from './settings.js';
 
 export class HydroLinkPlatform implements DynamicPlatformPlugin {
   private readonly cached = new Map<string, PlatformAccessory>();
   private readonly handlers = new Map<string, SoftenerAccessory>();
   private readonly client?: HydroLinkClient;
-  private readonly settings: Required<Omit<HydroLinkConfig, 'name' | 'email' | 'password' | 'webhookUrl'>> & {
-    webhookUrl?: string;
-  };
+  private readonly settings: ResolvedSettings;
   private polling = false;
 
   constructor(
@@ -18,15 +16,7 @@ export class HydroLinkPlatform implements DynamicPlatformPlugin {
     public readonly api: API,
   ) {
     const cfg = config as HydroLinkConfig;
-    this.settings = {
-      pollIntervalSeconds: Math.max(60, cfg.pollIntervalSeconds ?? 300),
-      saltTankMaxTenths: Math.max(1, cfg.saltTankMaxTenths ?? 85),
-      lowSaltThresholdPercent: cfg.lowSaltThresholdPercent ?? 20,
-      alarmConfirmPolls: Math.max(1, cfg.alarmConfirmPolls ?? 1),
-      exposeWaterUsage: cfg.exposeWaterUsage ?? true,
-      debug: cfg.debug ?? false,
-      webhookUrl: cfg.webhookUrl || undefined,
-    };
+    this.settings = resolveSettings(cfg);
 
     if (!cfg.email || !cfg.password) {
       this.log.error('HydroLink Home: email and password must be set in the plugin config.');
@@ -35,9 +25,19 @@ export class HydroLinkPlatform implements DynamicPlatformPlugin {
     this.client = new HydroLinkClient(cfg.email, cfg.password, this.log);
 
     this.api.on('didFinishLaunching', () => {
+      // Build handlers for accessories restored from cache right away, so the
+      // "Softener Offline" sensor works even if the first poll never succeeds.
+      for (const [uuid, accessory] of this.cached) {
+        this.handlers.set(uuid, new SoftenerAccessory(this, accessory, this.settings));
+      }
+
       void this.poll();
-      const timer = setInterval(() => void this.poll(), this.settings.pollIntervalSeconds * 1000);
-      this.api.on('shutdown', () => clearInterval(timer));
+      const pollTimer = setInterval(() => void this.poll(), this.settings.pollIntervalSeconds * 1000);
+      const staleTimer = setInterval(() => this.handlers.forEach((h) => h.checkStale()), 60_000);
+      this.api.on('shutdown', () => {
+        clearInterval(pollTimer);
+        clearInterval(staleTimer);
+      });
     });
   }
 
@@ -61,6 +61,7 @@ export class HydroLinkPlatform implements DynamicPlatformPlugin {
       }
     } finally {
       this.polling = false;
+      this.handlers.forEach((h) => h.checkStale());
     }
   }
 

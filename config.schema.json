@@ -48,6 +48,25 @@
         "default": true,
         "description": "Gallons used today, shown in Apple Home as a light sensor (HomeKit has no volume sensor, so the unit reads \"lux\" but the number is gallons)."
       },
+      "exposeTestSwitch": {
+        "title": "Show \"Test Flow Alarm\" switch",
+        "type": "boolean",
+        "default": true,
+        "description": "A HomeKit switch that forces the Continuous Flow Alarm on for a short time so you can test your automations. It switches itself off."
+      },
+      "testAlarmSeconds": {
+        "title": "Test alarm duration (seconds)",
+        "type": "integer",
+        "default": 60,
+        "minimum": 10
+      },
+      "staleAfterMinutes": {
+        "title": "Report \"Softener Offline\" after (minutes without good data)",
+        "type": "integer",
+        "default": 30,
+        "minimum": 10,
+        "description": "While offline, flow alarms cannot be reported. Attach an automation to the Softener Offline sensor."
+      },
       "webhookUrl": {
         "title": "Webhook URL (optional)",
         "type": "string",
