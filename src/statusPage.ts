@@ -27,7 +27,7 @@ export const STATUS_PAGE_HTML = `<!doctype html>
   .banner { border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; font-weight: 600; border: 1px solid; }
   .banner.bad { color: var(--bad); border-color: var(--bad); background: color-mix(in srgb, var(--bad) 12%, var(--card)); }
   .banner.warn { color: var(--warn); border-color: var(--warn); background: color-mix(in srgb, var(--warn) 12%, var(--card)); }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
   .card.wide { grid-column: 1 / -1; }
   .label { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
