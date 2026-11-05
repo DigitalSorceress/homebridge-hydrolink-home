@@ -1,12 +1,22 @@
 # homebridge-hydrolink-home
 
-A read-only Homebridge plugin that exposes an **EcoWater softener** (ERR3702, via the
-**HydroLink Home** app) to Apple Home, plus a small status web page.
+A read-only Homebridge plugin that exposes an **EcoWater water softener** to Apple Home through the
+**HydroLink Home** app's cloud service, plus a small status web page.
 
-It uses HydroLink Home's **unofficial** cloud API (`api.hydrolinkhome.com`). EcoWater can change
-it at any time. If that happens, the *Softener Offline* sensor will open.
+> **Unofficial prototype, provided as-is.**
+> This project is **not affiliated with, endorsed by, or supported by EcoWater**. "EcoWater" and
+> "HydroLink" are trademarks of their owners and are used here only to describe compatibility.
+> It was built on a best-effort basis from publicly shared community knowledge of HydroLink Home's
+> undocumented cloud API, and it was tested against exactly one device: the author's **EcoWater
+> ERR3702**, because that is what they had. Other models may or may not work.
+> EcoWater can change or block that API at any time. See [Disclaimers](#disclaimers) before using it.
 
-## What you get
+## What it does
+
+Signs in to HydroLink Home with your own account, reads your softener every few minutes, and shows
+the data as HomeKit sensors and on a web page. It never changes anything on the softener.
+
+## Exposed Sensors
 
 | In Apple Home | Source property | Notes |
 |---|---|---|
@@ -27,10 +37,19 @@ it on your LAN. Set the port to 0 to turn it off.
 
 ## Install
 
-On the Homebridge host:
+The plugin is not published to npm yet. Install it from source on the Homebridge host:
 
 ```sh
-npm run build && npm pack          # on your dev machine
+git clone https://github.com/DigitalSorceress/homebridge-hydrolink-home.git
+cd homebridge-hydrolink-home
+npm install
+npm run build
+npm pack                           # creates homebridge-hydrolink-home-<version>.tgz
+```
+
+Then copy the tarball to the Homebridge host and install it. On the Homebridge Raspberry Pi image:
+
+```sh
 scp homebridge-hydrolink-home-*.tgz <user>@<homebridge-host>:/tmp/
 ssh <user>@<homebridge-host>
 sudo hb-service add /tmp/homebridge-hydrolink-home-<version>.tgz
@@ -40,7 +59,8 @@ sudo hb-service restart
 Then open the plugin's settings in the Homebridge UI and enter your HydroLink Home email and password.
 The log should say `Adding softener "<name>"` and `Status page: ...`.
 
-Requires Node 18.14+ and Homebridge 1.8+ / 2.x (the plugin is ESM).
+**Requirements:** Node 22.12+ and Homebridge 2.x (the plugin is ESM). Developed and tested on
+Homebridge 2.5. Older Homebridge 1.x versions are untested and not supported.
 
 ## Settings
 
@@ -68,21 +88,55 @@ Requires Node 18.14+ and Homebridge 1.8+ / 2.x (the plugin is ESM).
 
 ## Known gaps
 
-- `regen_status_enum == 2` meaning "recharging" comes from community docs. Check it on the next recharge
-  (the log prints every change).
+- `regen_status_enum == 2` meaning "recharging" comes from community docs.
 - "Flow now" is the raw `current_water_flow_gpm`. The scale is unverified against live flow.
-- Alarm values have only been seen as 0. Any non-zero value counts as an alarm.
+- Alarm values have only been seen as 0. Any non-zero value counts as an alarm. The alarm path has
+  been exercised with the test switch and automated tests, but not by a real flow event.
+- Only an ERR3702 has been tested.
 - Read-only. The API has no known way to shut off water or change settings.
+
+## Privacy and security
+
+- The plugin talks to `api.hydrolinkhome.com` (your softener's data) and, if you set one, your own
+  webhook URL. Nothing else, and there is no analytics or telemetry.
+- Your HydroLink Home email and password are stored **in plain text** in Homebridge's `config.json`,
+  like most Homebridge plugins. Don't reuse that password elsewhere.
+- The status page has **no authentication**. Anyone who can reach its port can see your water and
+  salt data. Keep it on your local network, never forward it to the internet, or set the port to 0.
+- The plugin only reads data. It never sends commands to the softener.
+
+## Disclaimers
+
+- **Not a safety device.** This is a convenience monitor. It can be late, wrong, or silent, for example
+  if EcoWater's service is down, the API changes, or your Homebridge host loses internet. Do not rely
+  on it as your only protection against leaks, flooding, or water damage. Use dedicated leak detectors
+  and shutoff valves.
+- **Provided "AS IS", without warranty of any kind** (see [LICENSE](LICENSE)). Use at your own risk.
+- **Unofficial API.** HydroLink Home has no public API. This plugin relies on endpoints worked out by
+  the community. The author has **not reviewed EcoWater's or HydroLink Home's terms of use**, and
+  cannot say whether this kind of access is permitted under them. You are responsible for checking and
+  for how you use it with your account.
+- **Best-effort maintenance.** This began as a personal prototype. Issues and pull requests are
+  welcome, but there is no guarantee of fixes, support, or compatibility with future EcoWater changes.
 
 ## Development
 
 ```sh
 npm install
 npm run build      # compile to dist/
+npm test           # compile and run the automated tests (no network, no real account needed)
 npm run dev        # run a throwaway Homebridge in ./.homebridge-dev (create its config.json first)
 ```
 
+The tests use a synthetic sample device in `test/fixtures/` and never contact EcoWater.
 `config.md` and `.homebridge-dev/` hold credentials and are gitignored. Never commit them.
 
-Credit: the API was worked out by the community, notably
+## Credit
+
+The API was worked out by the community, notably
 [GrumpyTanker/Ecowater-Hydrolink-HACS](https://github.com/GrumpyTanker/Ecowater-Hydrolink-HACS).
+This plugin is an independent implementation and does not copy their code.
+
+## License
+
+[MIT](LICENSE) © 2026 DigitalSorceress

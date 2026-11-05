@@ -2,32 +2,52 @@
   "name": "homebridge-hydrolink-home",
   "displayName": "HydroLink Home (EcoWater)",
   "version": "0.3.0",
-  "description": "Homebridge platform plugin that exposes an EcoWater softener (HydroLink Home) as HomeKit sensors: salt level, recharging, and flow alarms.",
+  "description": "Unofficial, read-only Homebridge plugin for EcoWater water softeners via HydroLink Home. Prototype, provided as-is.",
   "license": "MIT",
   "private": true,
   "type": "module",
   "main": "dist/index.js",
+  "author": {
+    "name": "DigitalSorceress",
+    "url": "https://github.com/DigitalSorceress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DigitalSorceress/homebridge-hydrolink-home.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DigitalSorceress/homebridge-hydrolink-home/issues"
+  },
+  "homepage": "https://github.com/DigitalSorceress/homebridge-hydrolink-home#readme",
   "files": [
     "dist",
     "config.schema.json",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "keywords": [
     "homebridge-plugin",
+    "homebridge",
+    "homekit",
     "ecowater",
     "hydrolink",
-    "water-softener"
+    "water-softener",
+    "unofficial"
   ],
   "engines": {
-    "node": ">=20.0.0",
-    "homebridge": "^1.8.0 || ^2.0.0-beta.0"
+    "node": "^22.12.0 || ^24 || ^26",
+    "homebridge": "^2.0.0"
   },
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "watch": "tsc --watch",
-    "dev": "npm run build && homebridge -D -U ./.homebridge-dev -P ."
+    "test": "rimraf ./dist-test && tsc -p tsconfig.test.json && node --test \"dist-test/test/*.test.js\"",
+    "dev": "npm run build && homebridge -D -U ./.homebridge-dev -P .",
+    "prepublishOnly": "npm run build && npm test"
   },
   "devDependencies": {
+    "@homebridge/hap-nodejs": "^2.3.0",
     "@types/node": "^26.6.6",
     "homebridge": "^2.5.0",
     "rimraf": "^6.1.4",
