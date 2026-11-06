@@ -113,9 +113,13 @@ Homebridge 2.5. Older Homebridge 1.x versions are untested and not supported.
   and shutoff valves.
 - **Provided "AS IS", without warranty of any kind** (see [LICENSE](LICENSE)). Use at your own risk.
 - **Unofficial API.** HydroLink Home has no public API. This plugin relies on endpoints worked out by
-  the community. The author has **not reviewed EcoWater's or HydroLink Home's terms of use**, and
-  cannot say whether this kind of access is permitted under them. You are responsible for checking and
-  for how you use it with your account.
+  the community. EcoWater's general
+  [Terms and Conditions of Use](https://www.ecowater.com/terms-and-conditions-of-use/) cover its website
+  and mobile apps; the author did not find language in them about automated access or APIs, and
+  HydroLink Home is not named in them. The author could **not read HydroLink Home's own legal pages**
+  (they did not load for an automated reader), and this is not legal advice. EcoWater's terms let it
+  disable accounts, so using this plugin could, in principle, put your account at risk. Whether this kind
+  of access is permitted is for you to check, and you are responsible for how you use it with your account.
 - **Best-effort maintenance.** This began as a personal prototype. Issues and pull requests are
   welcome, but there is no guarantee of fixes, support, or compatibility with future EcoWater changes.
 
