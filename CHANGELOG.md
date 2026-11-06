@@ -7,6 +7,8 @@ This is a prototype maintained on a best-effort basis. Versions below 1.0 may ch
 - Add MIT license, automated tests, CI, and changelog.
 - Rewrite the README with disclaimers, privacy notes, a summary of EcoWater's terms, and known gaps.
 - Declare supported versions accurately: Node 22.12+ and Homebridge 2.x.
+- State "unofficial, not affiliated with EcoWater" in the Homebridge UI name and settings header,
+  the status page footer, and the startup log.
 
 ## 0.3.0
 

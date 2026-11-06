@@ -58,6 +58,7 @@ export const STATUS_PAGE_HTML = `<!doctype html>
     <div class="alarms" id="alarms" style="margin-top:8px"></div>
   </div>
   <footer id="foot"></footer>
+  <footer>Unofficial plugin · not affiliated with or endorsed by EcoWater</footer>
 </main>
 <script>
 (function () {

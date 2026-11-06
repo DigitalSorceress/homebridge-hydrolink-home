@@ -1,6 +1,6 @@
 {
   "name": "homebridge-hydrolink-home",
-  "displayName": "HydroLink Home (EcoWater)",
+  "displayName": "HydroLink Home (Unofficial)",
   "version": "0.3.0",
   "description": "Unofficial, read-only Homebridge plugin for EcoWater water softeners via HydroLink Home. Prototype, provided as-is.",
   "license": "MIT",

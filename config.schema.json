@@ -2,7 +2,7 @@
   "pluginAlias": "HydroLinkHome",
   "pluginType": "platform",
   "singular": true,
-  "headerDisplay": "Reads your EcoWater softener from the HydroLink Home cloud (unofficial API). Read-only.",
+  "headerDisplay": "Unofficial plugin: not affiliated with or endorsed by EcoWater. Reads your softener from the HydroLink Home cloud using an undocumented API, and is read-only. Provided as-is.",
   "schema": {
     "type": "object",
     "properties": {

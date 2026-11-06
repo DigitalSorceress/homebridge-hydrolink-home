@@ -24,6 +24,7 @@ export class HydroLinkPlatform implements DynamicPlatformPlugin {
       return;
     }
     this.client = new HydroLinkClient(cfg.email, cfg.password, this.log);
+    this.log.info('Unofficial plugin: not affiliated with or endorsed by EcoWater. Read-only, provided as-is.');
 
     this.api.on('didFinishLaunching', () => {
       // Build handlers for accessories restored from cache right away, so the
