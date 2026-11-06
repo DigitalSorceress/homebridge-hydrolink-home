@@ -100,7 +100,8 @@ Homebridge 2.5. Older Homebridge 1.x versions are untested and not supported.
 - The plugin talks to `api.hydrolinkhome.com` (your softener's data) and, if you set one, your own
   webhook URL. Nothing else, and there is no analytics or telemetry.
 - Your HydroLink Home email and password are stored **in plain text** in Homebridge's `config.json`,
-  like most Homebridge plugins. Don't reuse that password elsewhere.
+  like most Homebridge plugins. Don't reuse that password elsewhere, and keep your Homebridge host
+  and its backups private.
 - The status page has **no authentication**. Anyone who can reach its port can see your water and
   salt data. Keep it on your local network, never forward it to the internet, or set the port to 0.
 - The plugin only reads data. It never sends commands to the softener.
@@ -113,13 +114,22 @@ Homebridge 2.5. Older Homebridge 1.x versions are untested and not supported.
   and shutoff valves.
 - **Provided "AS IS", without warranty of any kind** (see [LICENSE](LICENSE)). Use at your own risk.
 - **Unofficial API.** HydroLink Home has no public API. This plugin relies on endpoints worked out by
-  the community. EcoWater's general
-  [Terms and Conditions of Use](https://www.ecowater.com/terms-and-conditions-of-use/) cover its website
-  and mobile apps; the author did not find language in them about automated access or APIs, and
-  HydroLink Home is not named in them. The author could **not read HydroLink Home's own legal pages**
-  (they did not load for an automated reader), and this is not legal advice. EcoWater's terms let it
-  disable accounts, so using this plugin could, in principle, put your account at risk. Whether this kind
-  of access is permitted is for you to check, and you are responsible for how you use it with your account.
+  the community, and EcoWater can change or remove them at any time.
+- **EcoWater's terms.** The author read EcoWater's
+  [Terms and Conditions of Use](https://www.ecowater.com/terms-and-conditions-of-use/) (last modified
+  May 4, 2021), which cover "any EcoWater mobile applications". They do not mention automated access,
+  scraping, reverse engineering, or third-party tools, and they do not name HydroLink Home. That is not
+  the same as permission, and this is not legal advice. Points worth knowing:
+  - EcoWater may suspend or terminate your use of the Services "at any time, with or without notice",
+    and may disable your login if in its opinion you have failed to comply with the terms. Using this
+    plugin could, in principle, put your account at risk.
+  - If you "allow access to your account", you are responsible for all such use, and you must keep your
+    password confidential. You enter your password into this plugin on your own server; protect that
+    server accordingly.
+  - EcoWater states it does not guarantee that the Services will be available or that notifications
+    will arrive, and tells users to test them. The same applies to this plugin.
+  - Whether this kind of access is acceptable to EcoWater is for you to decide. You are responsible for
+    how you use it with your account.
 - **Best-effort maintenance.** This began as a personal prototype. Issues and pull requests are
   welcome, but there is no guarantee of fixes, support, or compatibility with future EcoWater changes.
 
