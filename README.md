@@ -11,7 +11,7 @@ A read-only Homebridge plugin that exposes an **EcoWater water softener** to App
 > ERR3702**, because that is what they had. Other models may or may not work.
 > EcoWater can change or block that API at any time. See [Disclaimers](#disclaimers) before using it.
 
-## What it does
+## How it works
 
 Signs in to HydroLink Home with your own account, reads your softener every few minutes, and shows
 the data as HomeKit sensors and on a web page. It never changes anything on the softener.
