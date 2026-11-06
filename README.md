@@ -132,7 +132,7 @@ Homebridge 2.5. Older Homebridge 1.x versions are untested and not supported.
     how you use it with your account.
 - **Best-effort maintenance.** This began as a personal prototype. Issues and pull requests are
   welcome, but there is no guarantee of fixes, support, or compatibility with future EcoWater changes.
-
+- **AI Usage**: This repository was developed with the assistance of Claude Code.
 ## Development
 
 ```sh
